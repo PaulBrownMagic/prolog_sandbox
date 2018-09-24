@@ -14,7 +14,7 @@
  * @arg update 2018-09-24
  *
  * Latest saved version ...
- * @version 1808.035
+ * @version 1809.043
  *
  * Thx to Paul Brown (@PaulBrownMagic) for his initial contribution
  * from my spaghetti coding to his Prolog fluent coding.
@@ -279,12 +279,12 @@ make_menu(MX, MenuX) :-
 % cached_make_menu/2
 % (+MX:integer, -MenuX:string)
 % Caching optimization on MenuX string
+% Known or added to be known
 
 cached_make_menu(MX, MenuX) :-
-    % extract MenuX from cache OR
-        known(menux, MX, MenuX);
-    % if not in cache, make MenuX and add to cache
-        make_menu(MX, MenuX),
+    (   known(menux,MX, MenuX),
+        ! )
+    ;   make_menu(MX, MenuX),
         asserta(known(menux, MX, MenuX)).
 
 % -----
@@ -312,12 +312,12 @@ make_std_choices(MX, Choices) :-
 % cached_std_choices/2
 % (MX:integer, Choices:list)
 % Caching optimization on Choices list
+% Known or added to be known
 
 cached_std_choices(MX, Choices) :-
-    % extract Choices from cache OR
-        known(mx_std_choices, MX, Choices);
-    % if not in cache, make std Choices list and add to cache
-        make_std_choices(MX, Choices),
+    (   known(mx_std_choices, MX, Choices),
+        ! )
+    ;   make_std_choices(MX, Choices),
         asserta(known(mx_std_choices, MX, Choices)).
 
 % is_std_choice/2
@@ -327,8 +327,7 @@ cached_std_choices(MX, Choices) :-
 is_std_choice(MX, C) :-
     % true if C appears once
     cached_std_choices(MX, Choices),
-    member(C, Choices),
-    !.
+    member(C, Choices).
 
 % mx_choice_error/1
 % (UserChoice:Char) can be either num or alpha
@@ -373,7 +372,7 @@ check_menu(MX, UserChoice) :-
 
 check_menu(MX, UserChoice) :-
 % if num choice and not valid choice
-% then stop searching and false to repeat
+% then error message, stop searching and false to repeat
     atom_number(UserChoice, C),
     \+ is_std_choice(MX, C),
     mx_choice_error(C),
@@ -383,7 +382,7 @@ check_menu(MX, UserChoice) :-
 check_menu(_, UserChoice) :-
 % Latest check ending by a bad choice
 % as neither exit or std choice or extended
-% Write choice error msg + retype + flag false for repeat
+% then error message, stop searching and false to repeat
     mx_choice_error(UserChoice),
     !,
     false.
@@ -406,13 +405,13 @@ ask_menu(MX) :-
     % ask choice and repeat until valid choice
         repeat,
         (   get_char_1(UserChoice),
-            check_menu(MX, UserChoice) )
+            check_menu(MX, UserChoice),
+            !)
         ; !.
 
 go :-
     cls,
-    ask_menu(1),
-    !.
+    ask_menu(1).
 
 % ---------------
 % TEST CHECK-LIST
