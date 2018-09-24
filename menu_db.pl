@@ -14,7 +14,7 @@
  * @arg update 2018-09-24
  *
  * Latest saved version ...
- * @version 1809.043
+ * @version 1809.045
  *
  * Thx to Paul Brown (@PaulBrownMagic) for his initial contribution
  * from my spaghetti coding to his Prolog fluent coding.
@@ -77,6 +77,8 @@
         mxwm/0,
         mxwc/1,
         mxw_/1,
+        exist_mx/1,
+        cached_exist_mx/1,
     % messages and errors
         mx_write_message/2,
         mx_write_message/1,
@@ -168,6 +170,20 @@ retract_cached_mx(MX) :-
         retract(known(menux, MX, _)),
     % retract cached list of standard choices
         retract(known(mx_std_choices, MX, _)).
+
+% exist_mx/1 is semidet
+% (+MX:integer)
+% Check if menu number is valid
+% true if MX found once / false otherwise
+% @tbd error messages
+
+exist_mx(MX) :-
+    mx_choice_item(MX, _, _),
+    !.
+
+cached_exist_mx(MX) :-
+    known(menux, MX, _),
+    !.
 
 % --------
 % MESSAGES
@@ -264,7 +280,14 @@ format_subparts([X|Xs], [SubpartHead|SubpartTrail]) :-
 
 % make_menu/2
 % (+MX:integer, -MenuX:string)
+% Check = false if no number for the menu
 % Make MenuX as a string = Label + Separator + Subparts
+% Check = false if no number for the menu
+
+make_menu(MX, _) :-
+    \+ exist_mx(MX),
+    !,
+    false.
 
 make_menu(MX, MenuX) :-
     % extract subparts needed to build the menu string + check OK
@@ -279,19 +302,26 @@ make_menu(MX, MenuX) :-
 % cached_make_menu/2
 % (+MX:integer, -MenuX:string)
 % Caching optimization on MenuX string
-% Known or added to be known
+% Check = false if no number for the menu
 
 cached_make_menu(MX, MenuX) :-
-    (   known(menux,MX, MenuX),
-        ! )
-    ;   make_menu(MX, MenuX),
-        asserta(known(menux, MX, MenuX)).
+    known(menux, MX, MenuX),
+    !.
+
+cached_make_menu(MX, MenuX) :-
+    make_menu(MX, MenuX),
+    asserta(known(menux, MX, MenuX)).
 
 % -----
 % DO_IT
 % -----
 % Program execution based on menu selection by user
 % = to adapt depending on program needs
+
+do_it(MX, _) :-
+    \+ exist_mx(MX),
+    !,
+    false.
 
 do_it(MX, UserChoice) :-
     nl, writeln('TDB - replace by real do_it/2'),
@@ -306,6 +336,11 @@ do_it(MX, UserChoice) :-
 % (MX:integer, Choices:list)
 % Make the list of valid Choices for menu number MX
 
+make_std_choices(MX, _) :-
+    \+ exist_mx(MX),
+    !,
+    false.
+
 make_std_choices(MX, Choices) :-
     findall(Choice, mx_choice_item(MX, Choice, _), Choices).
 
@@ -315,10 +350,11 @@ make_std_choices(MX, Choices) :-
 % Known or added to be known
 
 cached_std_choices(MX, Choices) :-
-    (   known(mx_std_choices, MX, Choices),
-        ! )
-    ;   make_std_choices(MX, Choices),
-        asserta(known(mx_std_choices, MX, Choices)).
+    known(mx_std_choices, MX, Choices), !.
+
+cached_std_choices(MX, Choices) :-
+    make_std_choices(MX, Choices),
+    asserta(known(mx_std_choices, MX, Choices)).
 
 % is_std_choice/2
 % (MX:integer, C:integer)
@@ -397,16 +433,20 @@ check_menu(_, UserChoice) :-
 % Display menu number MX, ask / control and launch choices
 
 ask_menu(MX) :-
+    \+ exist_mx(MX),
+    !,
+    false.
+
+ask_menu(MX) :-
     % make and display menu
         cached_make_menu(MX, MenuX),
         write(MenuX),
-    % msg to ask user choice
-        nl, mx_write_message([fg(blue)],510),
     % ask choice and repeat until valid choice
+        nl, mx_write_message([fg(blue)],510),
         repeat,
         (   get_char_1(UserChoice),
             check_menu(MX, UserChoice),
-            !)
+            ! )
         ; !.
 
 go :-
