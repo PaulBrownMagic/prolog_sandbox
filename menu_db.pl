@@ -11,10 +11,10 @@
  * @author Thierry JAUNAY
  * @licence MIT
  * @arg creadate 2018-08-05
- * @arg update 2018-09-22
+ * @arg update 2018-09-24
  *
  * Latest saved version ...
- * @version 1808.021_035
+ * @version 1808.035
  *
  * Thx to Paul Brown (@PaulBrownMagic) for his initial contribution
  * from my spaghetti coding to his Prolog fluent coding.

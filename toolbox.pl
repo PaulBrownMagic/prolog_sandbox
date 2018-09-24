@@ -5,10 +5,10 @@
  * @author Thierry JAUNAY
  * @licence MIT
  * @arg creadate 2018-07-28
- * @arg update 2018-09-21
+ * @arg update 2018-09-24
  *
  * Latest saved version ...
- * @version 1809_011
+ * @version 1809.011
  *
  *
  * ----------
