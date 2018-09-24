@@ -310,7 +310,7 @@ cached_make_menu(MX, MenuX) :-
 
 cached_make_menu(MX, MenuX) :-
     make_menu(MX, MenuX),
-    asserta(known(menux, MX, MenuX)).
+    assertz(known(menux, MX, MenuX)).
 
 % -----
 % DO_IT
@@ -354,7 +354,7 @@ cached_std_choices(MX, Choices) :-
 
 cached_std_choices(MX, Choices) :-
     make_std_choices(MX, Choices),
-    asserta(known(mx_std_choices, MX, Choices)).
+    assertz(known(mx_std_choices, MX, Choices)).
 
 % is_std_choice/2
 % (MX:integer, C:integer)
