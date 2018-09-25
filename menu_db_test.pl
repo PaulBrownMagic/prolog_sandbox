@@ -6,8 +6,8 @@
  * @author Thierry JAUNAY
  * @licence MIT
  * @arg creadate 2018-08-24
- * @arg update 2018-09-21
- * @version 1808.021_025
+ * @arg update 2018-09-25
+ * @version 1808.026
  *
  * ----------
  *
@@ -45,6 +45,36 @@
               mx_label/2,
               mx_group/2,
               mx_parent/2] ).
+
+% --------------
+% ERROR MESSAGES
+% --------------
+
+:- multifile prolog:message//1.
+
+prolog:message(data_error(menu_db, bad_ext)) -->
+    [ '(~w) Bad extension'-[100]].
+
+prolog:message(data_error(menu_db, no_item)) -->
+    [ '(~w) No menu item found'-[110]].
+
+prolog:message(data_error(menu_db, num_choice)) -->
+    [ '(~w) Standard numerical choice'-[500]].
+
+prolog:message(data_error(menu_db, ext_choice)) -->
+    [ '(~w) Extended menu choice'-[501]].
+
+prolog:message(data_error(menu_db, what_choice)) -->
+    [ '(~w) What is your choice ... ? '-[510]].
+
+prolog:message(data_error(menu_db, chose_again)) -->
+    [ '(~w) Please retype your choice ...  '-[511]].
+
+prolog:message(data_error(menu_db, bad_num_choice)) -->
+    [ '(~w) Bad numerical code choice ...  '-[550]].
+
+prolog:message(data_error(menu_db, bad_ext_choice)) -->
+    [ '(~w) Bad numerical code choice ...  '-[551]].
 
 % ----------------
 % DATABASE EXAMPLE

@@ -1,4 +1,4 @@
-/* <module> Menu management menu_db.pl
+/* <module> menu_db.pl
  *
  * based on a referential mx_choice_item/3
  * (+MX:Integer, +Choice:Integer, +Name:String)
@@ -6,32 +6,29 @@
  * to provide a simple selection with menu number + choice
  * in two ways : numerical or hashtag.
  *
- * Language = SWI Prolog
- *
- * @author Thierry JAUNAY
+ * @version 1809.046
  * @licence MIT
- * @arg creadate 2018-08-05
- * @arg update 2018-09-24
+ * @copyright Wiserman & Partners
+ * @author Thierry JAUNAY
+ * @arg creadate 2018/08/05
+ * @arg update 2018/09/25
+ * @arg comment menu_db.pl - Menu management
+ * @arg language SWI-Prolog
  *
- * Latest saved version ...
- * @version 1809.045
- *
+ * ----------
  * Thx to Paul Brown (@PaulBrownMagic) for his initial contribution
  * from my spaghetti coding to his Prolog fluent coding.
  *
- * Thx to Anne OGBORN (@AnnieTheObscure) for her patience and
+ * Thx to Anne OGBORN (@AnnieTheObscure) for her patience and'),
  * great advices making me write a much better Prolog style code.
  *
  * ----------
- *
  * Use =
- * - create the menu database (in menu_db_x)
- * - create do_it_std for menu choices
- * - create do_it_ext for extra choices (@tbd hashtags)
+ * - create the menu database (for example menu_db_x)
+ * - create do_it/2 for menu choices
  * - use go/0 or ask_menu/1 or do_it/2 versions depending on needs
  *
  * Also added some useful "Internal Tools"
- *
  * ----------
  *
  * Copyright (c)  2018, Wiserman & Partners
@@ -63,6 +60,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+% ----------------
 % MODULES AND DATA
 % ----------------
 %
@@ -158,8 +156,7 @@ mxw_([H|T]) :-
     print_matrix([H|T]).
 mxw_([]) :-
     nl, mx_write_error(2, 110), nl,
-    !,
-    false.
+    !, fail.
 
 % retract_cached_mx/1
 % (+MX:integer)
@@ -257,8 +254,7 @@ make_menu_list(MX, Xs) :-
 
 make_menu_list_([]) :-
     nl, mx_write_error(2, 110), nl,
-    !,
-    false.
+    !, fail.
 
 make_menu_list_(_).
 
@@ -280,14 +276,13 @@ format_subparts([X|Xs], [SubpartHead|SubpartTrail]) :-
 
 % make_menu/2
 % (+MX:integer, -MenuX:string)
-% Check = false if no number for the menu
+% Check = fail if no number for the menu
 % Make MenuX as a string = Label + Separator + Subparts
-% Check = false if no number for the menu
+% Check = fail if no number for the menu
 
 make_menu(MX, _) :-
     \+ exist_mx(MX),
-    !,
-    false.
+    !, fail.
 
 make_menu(MX, MenuX) :-
     % extract subparts needed to build the menu string + check OK
@@ -320,11 +315,10 @@ cached_make_menu(MX, MenuX) :-
 
 do_it(MX, _) :-
     \+ exist_mx(MX),
-    !,
-    false.
+    !, fail.
 
 do_it(MX, UserChoice) :-
-    nl, writeln('TDB - replace by real do_it/2'),
+    nl, writeln('TBD - replace by real do_it/2'),
     format('(Menu: ~w / Choice: ~w)~n~n', [MX, UserChoice]).
 
 % ---------------------
@@ -338,8 +332,7 @@ do_it(MX, UserChoice) :-
 
 make_std_choices(MX, _) :-
     \+ exist_mx(MX),
-    !,
-    false.
+    !, fail.
 
 make_std_choices(MX, Choices) :-
     findall(Choice, mx_choice_item(MX, Choice, _), Choices).
@@ -363,7 +356,8 @@ cached_std_choices(MX, Choices) :-
 is_std_choice(MX, C) :-
     % true if C appears once
     cached_std_choices(MX, Choices),
-    member(C, Choices).
+    member(C, Choices),
+    !.
 
 % mx_choice_error/1
 % (UserChoice:Char) can be either num or alpha
@@ -408,46 +402,51 @@ check_menu(MX, UserChoice) :-
 
 check_menu(MX, UserChoice) :-
 % if num choice and not valid choice
-% then error message, stop searching and false to repeat
+% then error message, stop searching and fail to repeat
     atom_number(UserChoice, C),
     \+ is_std_choice(MX, C),
     mx_choice_error(C),
-    !,
-    false.
+    !, fail.
 
 check_menu(_, UserChoice) :-
 % Latest check ending by a bad choice
 % as neither exit or std choice or extended
-% then error message, stop searching and false to repeat
+% then error message, stop searching and fail to repeat
     mx_choice_error(UserChoice),
-    !,
-    false.
+    !, fail.
 
 % ---------
 % GO / MENU
 % ---------
 % Launch program with go/0 or ask_menu/1
 
+% write_menu/1
+% (MX:integer)
+% Display menu number MX, ask / control and launch choices
+
+write_menu(MX) :-
+    cached_make_menu(MX, MenuX),
+    write(MenuX).
+
 % ask_menu/1
 % (MX:integer)
 % Display menu number MX, ask / control and launch choices
 
 ask_menu(MX) :-
+% check MX validity
     \+ exist_mx(MX),
-    !,
-    false.
+    !, fail.
 
 ask_menu(MX) :-
-    % make and display menu
-        cached_make_menu(MX, MenuX),
-        write(MenuX),
-    % ask choice and repeat until valid choice
-        nl, mx_write_message([fg(blue)],510),
-        repeat,
-        (   get_char_1(UserChoice),
-            check_menu(MX, UserChoice),
-            ! )
-        ; !.
+% make, check and display menu
+    write_menu(MX),
+% ask choice and repeat until valid choice
+    nl, mx_write_message([fg(blue)],510),
+    repeat,
+    (   get_char_1(UserChoice),
+        check_menu(MX, UserChoice),
+        ! )
+    ; !.
 
 go :-
     cls,
@@ -460,7 +459,7 @@ go :-
 %% Typical choices to test with mx_test/2 and ask_menu/2,
 % once menu_db_0 loaded :
 %
-% MX= 1 / num choice 1 (all is fine)
+% MX = 1 / num choice 1 (all is fine)
 % MX = 1 / num choice 5 (not existing choice)
 % MX = 1 / ext choice = # (alpha extended choice)
 % MX = 1 / ext choice = a (non existing alpha extended choice)

@@ -1,16 +1,14 @@
 /*
- * Loader for menu_db.pl
- * i-e what is required to make it work
+ * load_menu_db.pl
  *
- * Language = SWI Prolog
- *
- * @author Thierry JAUNAY
- * @licence MIT
- * @arg creadate 2018-09-04
- * @arg update 2018-09-24
- *
- * Latest saved version ...
  * @version 1809.007
+ * @licence MIT
+ * @copyright Wiserman & Partners
+ * @author Thierry JAUNAY
+ * @arg creadate 2018/09/04
+ * @arg update 2018/09/25
+ * @arg comment loader for menu_db.pl
+ * @arg language SWI-Prolog
  *
  * ----------
  *
