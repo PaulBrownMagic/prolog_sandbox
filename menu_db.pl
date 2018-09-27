@@ -6,12 +6,12 @@
  * to provide a simple selection with menu number + choice
  * in two ways : numerical or hashtag.
  *
- * @version 1809.046
+ * @version 1809.049
  * @licence MIT
  * @copyright Wiserman & Partners
  * @author Thierry JAUNAY
  * @arg creadate 2018/08/05
- * @arg update 2018/09/25
+ * @arg update 2018/09/27
  * @arg comment menu_db.pl - Menu management
  * @arg language SWI-Prolog
  *
@@ -63,7 +63,6 @@
 % ----------------
 % MODULES AND DATA
 % ----------------
-%
 
 % menu_db module
 

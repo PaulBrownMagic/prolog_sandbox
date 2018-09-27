@@ -1,11 +1,11 @@
 /* <module> menu_db_test.pl
  *
- * @version 1809.026
+ * @version 1809.029
  * @licence MIT
  * @copyright Wiserman & Partners
  * @author Thierry JAUNAY
  * @arg creadate 2018/08/24
- * @arg update 2018/09/25
+ * @arg update 2018/09/27
  * @arg comment Data test sample for menu_db.pl
  * @arg language SWI-Prolog
  *
@@ -46,14 +46,14 @@
               mx_group/2,
               mx_parent/2] ).
 
-% --------------
-% ERROR MESSAGES
-% --------------
+% --------
+% MESSAGES
+% --------
 
 :- multifile prolog:message//1.
 
 prolog:message(menu_not_found(MX) ) -->
-    [ '(~w) Menu not found: ~w~n' - [100, MX] ].
+    [ '(~w) Menu not found: ~w' - [100, MX] ].
 
 prolog:message(no_item ) -->
     [ '(~w) No menu item found' - [110] ].
@@ -68,8 +68,7 @@ prolog:message(ext_choice ) -->
     [ '(~w) Extended menu choice' - [501] ].
 
 prolog:message(what_choice ) -->
-    [ '(~w) What is your choice ... ? '
-      - [510] ].
+    [ '(~w) What is your choice ... ? ' - [510] ].
 
 prolog:message(chose_again ) -->
     [ '(~w) Please retype your menu choice ...  ' - [511] ].
@@ -88,22 +87,8 @@ prolog:message(bad_ext_choice(UserChoice) ) -->
 % MX = -1 (reserved)
 
 % mx_choice_item(MX:Integer, Choice:Integer, Name:String)
-% Menu database (0 and up) + messages (-1)
-
-% messages
-
-mx_choice_item(-1, 0, ""). % No display of error msg suffix
-mx_choice_item(-1, 1, "ERROR: ").
-mx_choice_item(-1, 2, "PROGRAMMING ERROR: ").
-
-mx_choice_item(-1, 100, "Bad extension ").
-mx_choice_item(-1, 110, "No menu item found").
-mx_choice_item(-1, 500, "Standard numerical menu choice ").
-mx_choice_item(-1, 501, "Extended menu choice ").
-mx_choice_item(-1, 510, "What is your choice ... ? ").
-mx_choice_item(-1, 511, "Please, retype your choice...").
-mx_choice_item(-1, 550, "Bad numerical code choice").
-mx_choice_item(-1, 551, "Bad extended code choice").
+% Menu database (0 and up)
+% Negative menu numbers (reserved / please don't use)
 
 % menu database
 
