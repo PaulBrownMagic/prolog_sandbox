@@ -77,10 +77,6 @@
         mxw_/1,
         exist_mx/1,
         cached_exist_mx/1,
-    % messages and errors
-        mx_write_message/2,
-        mx_write_message/1,
-        mx_write_error/2,
     % menu_db program
         cached_make_menu/2,
         do_it/2,
@@ -155,7 +151,7 @@ mxwc(MX) :-
 mxw_([H|T]) :-
     print_matrix([H|T]).
 mxw_([]) :-
-    nl, mx_write_error(2, 110), nl,
+    nl, print_message(error, no_item),
     !, fail.
 
 % retract_cached_mx/1
@@ -181,33 +177,6 @@ exist_mx(MX) :-
 cached_exist_mx(MX) :-
     known(menux, MX, _),
     !.
-
-% --------
-% MESSAGES
-% --------
-% Messages and errors management based on mx_menu_item/3
-%
-% Type: integer = error type
-% X: integer = message number in mx_choice_item(-1, X, _)
-
-% mx_write_message/2
-% (+Attributes:list, +X:integer)
-% Extract and write message number X according to display attributes
-
-mx_write_message(Attributes, X) :-
-    mx_choice_item(-1, X, Str),
-    ansi_format(Attributes, '~w', [Str]).
-
-mx_write_message(X) :-
-    mx_write_message(_, X).
-
-% mx_write_error/2
-% (+Type:integer, +X:integer)
-% Extract message number X, write it
-
-mx_write_error(Type, X) :-
-    mx_write_message([fg(red)], Type),
-    mx_write_message([fg(red)], X).
 
 % ------
 % LABELS
@@ -253,7 +222,7 @@ make_menu_list(MX, Xs) :-
     make_menu_list_(Xs).
 
 make_menu_list_([]) :-
-    nl, mx_write_error(2, 110), nl,
+    nl, print_message(warning, no_item),
     !, fail.
 
 make_menu_list_(_).
@@ -282,6 +251,7 @@ format_subparts([X|Xs], [SubpartHead|SubpartTrail]) :-
 
 make_menu(MX, _) :-
     \+ exist_mx(MX),
+    print_message(warning, menu_not_found(MX)),
     !, fail.
 
 make_menu(MX, MenuX) :-
@@ -315,6 +285,7 @@ cached_make_menu(MX, MenuX) :-
 
 do_it(MX, _) :-
     \+ exist_mx(MX),
+    print_message(warning, menu_not_found(MX)),
     !, fail.
 
 do_it(MX, UserChoice) :-
@@ -332,6 +303,7 @@ do_it(MX, UserChoice) :-
 
 make_std_choices(MX, _) :-
     \+ exist_mx(MX),
+    print_message(error, menu_not_found(MX)),
     !, fail.
 
 make_std_choices(MX, Choices) :-
@@ -367,15 +339,13 @@ mx_choice_error(UserChoice) :-
 % error message on bad num menu choice
     number(UserChoice),
     !,
-    nl, ansi_format([fg(red)],'"~d" ', [UserChoice]),
-    mx_write_error(1, 550), nl,
-    mx_write_message([fg(blue)], 511).
+    print_message(error, bad_num_choice(UserChoice)),
+    print_message(warning, chose_again).
 
 mx_choice_error(UserChoice) :-
 % error message on bad alpha menu choice
-    nl, ansi_format([fg(red)],'"~w" ', [UserChoice]),
-    mx_write_error(1, 551), nl,
-    mx_write_message([fg(blue)], 511).
+    print_message(error, bad_ext_choice(UserChoice)),
+    print_message(warning, chose_again).
 
 % check_menu/2
 % (MX:integer, UserChoice:char)
@@ -435,13 +405,14 @@ write_menu(MX) :-
 ask_menu(MX) :-
 % check MX validity
     \+ exist_mx(MX),
+    print_message(warning, menu_not_found(MX)),
     !, fail.
 
 ask_menu(MX) :-
 % make, check and display menu
     write_menu(MX),
 % ask choice and repeat until valid choice
-    nl, mx_write_message([fg(blue)],510),
+    nl, print_message(information, what_choice),
     repeat,
     (   get_char_1(UserChoice),
         check_menu(MX, UserChoice),

@@ -1,13 +1,13 @@
-/* <module> Data test sample for menu_db.pl
- * menu_db_test.pl
+/* <module> menu_db_test.pl
  *
- * Language = SWI Prolog
- *
- * @author Thierry JAUNAY
+ * @version 1809.026
  * @licence MIT
- * @arg creadate 2018-08-24
- * @arg update 2018-09-25
- * @version 1808.026
+ * @copyright Wiserman & Partners
+ * @author Thierry JAUNAY
+ * @arg creadate 2018/08/24
+ * @arg update 2018/09/25
+ * @arg comment Data test sample for menu_db.pl
+ * @arg language SWI-Prolog
  *
  * ----------
  *
@@ -52,29 +52,33 @@
 
 :- multifile prolog:message//1.
 
-prolog:message(data_error(menu_db, bad_ext)) -->
-    [ '(~w) Bad extension'-[100]].
+prolog:message(menu_not_found(MX) ) -->
+    [ '(~w) Menu not found: ~w~n' - [100, MX] ].
 
-prolog:message(data_error(menu_db, no_item)) -->
-    [ '(~w) No menu item found'-[110]].
+prolog:message(no_item ) -->
+    [ '(~w) No menu item found' - [110] ].
 
-prolog:message(data_error(menu_db, num_choice)) -->
-    [ '(~w) Standard numerical choice'-[500]].
+prolog:message(no_item(MX) ) -->
+    [ '(~w) No menu item found in menu: ~w' - [111, MX] ].
 
-prolog:message(data_error(menu_db, ext_choice)) -->
-    [ '(~w) Extended menu choice'-[501]].
+prolog:message(num_choice ) -->
+    [ '(~w) Standard numerical choice' - [500] ].
 
-prolog:message(data_error(menu_db, what_choice)) -->
-    [ '(~w) What is your choice ... ? '-[510]].
+prolog:message(ext_choice ) -->
+    [ '(~w) Extended menu choice' - [501] ].
 
-prolog:message(data_error(menu_db, chose_again)) -->
-    [ '(~w) Please retype your choice ...  '-[511]].
+prolog:message(what_choice ) -->
+    [ '(~w) What is your choice ... ? '
+      - [510] ].
 
-prolog:message(data_error(menu_db, bad_num_choice)) -->
-    [ '(~w) Bad numerical code choice ...  '-[550]].
+prolog:message(chose_again ) -->
+    [ '(~w) Please retype your menu choice ...  ' - [511] ].
 
-prolog:message(data_error(menu_db, bad_ext_choice)) -->
-    [ '(~w) Bad numerical code choice ...  '-[551]].
+prolog:message(bad_num_choice(UserChoice) ) -->
+    [ '(~w) Bad numerical code choice: ~w' - [550, UserChoice], nl ].
+
+prolog:message(bad_ext_choice(UserChoice) ) -->
+    [ '(~w) Bad extended code choice: ~w  ' - [551, UserChoice], nl ].
 
 % ----------------
 % DATABASE EXAMPLE
