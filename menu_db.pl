@@ -71,7 +71,6 @@
         retract_cached_mx/1,
      % internal tools
         mxw/3,
-        mxwm/0,
         mxwc/1,
         mxw_/1,
         exist_mx/1,
@@ -128,12 +127,6 @@
 mxw(MX, Choice, Item) :-
     findall([MX, Choice, Item], mx_choice_item(MX, Choice, Item), MXs),
     mxw_(MXs).
-
-% mxwm/0
-% mx write filtered on MX = -1, to only display codes and messages
-
-mxwm :-
-    mxw(-1, _, _).
 
 % mxwc/1
 % (+MX:integer)
@@ -437,7 +430,8 @@ go :-
 %
 
 mx_test(MX) :-
-     ask_menu(MX).
+    cls,
+    ask_menu(MX).
 
 /* ********** END OF FILE ********** */
 

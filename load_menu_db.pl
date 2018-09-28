@@ -1,12 +1,12 @@
 /*
  * load_menu_db.pl
  *
- * @version 1809.007
+ * @version 1809.008
  * @licence MIT
  * @copyright Wiserman & Partners
  * @author Thierry JAUNAY
  * @arg creadate 2018/09/04
- * @arg update 2018/09/25
+ * @arg update 2018/09/29
  * @arg comment loader for menu_db.pl
  * @arg language SWI-Prolog
  *
@@ -44,12 +44,6 @@
 % -----------------------
 % use_module declarations
 % -----------------------
-
-% SWI-Prolog library
-
-:- use_module(library(ansi_term), [
-               ansi_format/3 ]
-             ).
 
 % toolbox module for predicates
 

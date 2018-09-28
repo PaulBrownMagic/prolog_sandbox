@@ -1,17 +1,17 @@
 /* <module> menu_db_test.pl
  *
- * @version 1809.029
+ * @version 1809.031
  * @licence MIT
  * @copyright Wiserman & Partners
  * @author Thierry JAUNAY
  * @arg creadate 2018/08/24
- * @arg update 2018/09/27
+ * @arg update 2018/09/28
  * @arg comment Data test sample for menu_db.pl
  * @arg language SWI-Prolog
  *
  * ----------
  *
- * Copyright (c)  2018, Wiserman & Partners
+ * Copyright (c) 2018, Wiserman & Partners
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -77,7 +77,7 @@ prolog:message(bad_num_choice(UserChoice) ) -->
     [ '(~w) Bad numerical code choice: ~w' - [550, UserChoice], nl ].
 
 prolog:message(bad_ext_choice(UserChoice) ) -->
-    [ '(~w) Bad extended code choice: ~w  ' - [551, UserChoice], nl ].
+    [ '(~w) Bad extended code choice: ~w' - [551, UserChoice], nl ].
 
 % ----------------
 % DATABASE EXAMPLE
