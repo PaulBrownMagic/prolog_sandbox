@@ -7,7 +7,7 @@
  * @author Thierry JAUNAY
  * @arg creadate 2018/08/25
  * @arg update 2018/09/30
- * @arg comment Loader for tsk.pl
+ * @arg comment load.pl - Loader for tsk.pl
  * @arg language SWI-Prolog
  *
  * ----------
@@ -41,18 +41,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-use_module(toolbox, [
-                get_char_1/1,
-                if_empty_default/3,
-                list_to_string/2,
-                print_matrix/1 ] ).
-
-use_module(menu_db).
-use_module(menu_db0).
-
-
-
-
+:- use_module(menu_db_for_tsk).
+:- use_module(menu_db).
 
 
 
