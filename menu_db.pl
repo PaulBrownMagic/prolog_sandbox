@@ -96,18 +96,16 @@
 
 % load menu_db_msg
 
-[menu_db_msg].
+:- [menu_db_msg].
 
 % menu_db settings
+% ----------------
 
+% Example : [Menu_1] 0=Back,1=Option_1,2=Option_2,3=Option_3.
 :- setting(mx_label_prefix, atom, '[', "menu label prefix").
 :- setting(mx_label_suffix, atom, '] ', "menu label suffix").
 :- setting(mx_subpart_suffix, atom, ',', "menu subpart suffix").
 :- setting(mx_subpart_last_suffix, atom, '.', "menu subpart last suffix").
-% Example : [Menu_1] 0=Back,1=Option_1,2=Option_2,3=Option_3.
-
-:- setting(mx_ext_char, char, '#', "extended menu prefix char").
-:- setting(mx_exit_char, char, '.', "menu exit char").
 
 % Example of alternative template for menu UI
 % <Menu_1>|0=Back|1=Option_1|2=Option_2|3=Option_3|
@@ -116,6 +114,9 @@
 % :- setting(mx_label_suffix, atom, '>|', "menu label suffix").
 % :- setting(mx_subpart_suffix, atom, '|', "menu subpart suffix").
 % :- setting(mx_subpart_last_suffix, atom, '|', "menu subpart last suffix").
+
+:- setting(mx_ext_char, char, '#', "extended menu prefix char").
+:- setting(mx_exit_char, char, '.', "menu exit char").
 
 :- load_settings('settings.db').
 
