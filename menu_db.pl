@@ -6,12 +6,12 @@
  * to provide a simple selection with menu number + choice
  * in two ways : numerical or hashtag.
  *
- * @version 1809.049
+ * @version 1809.052
  * @licence MIT
  * @copyright Wiserman & Partners
  * @author Thierry JAUNAY
  * @arg creadate 2018/08/05
- * @arg update 2018/09/27
+ * @arg update 2018/09/30
  * @arg comment menu_db.pl - Menu management
  * @arg language SWI-Prolog
  *
@@ -31,7 +31,7 @@
  * Also added some useful "Internal Tools"
  * ----------
  *
- * Copyright (c)  2018, Wiserman & Partners
+ * Copyright (c) 2018, Wiserman & Partners
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -83,9 +83,26 @@
     % test
         mx_test/1 ] ).
 
+% toolbox module for predicates
+
+:- use_module('toolbox', [
+               cls/0,
+               get_char_1/1,
+               if_empty_default/3,
+               known/3,
+               list_to_string/2,
+               print_matrix/1 ]
+             ).
+
+% load menu_db_msg
+
+[menu_db_msg].
+
 % menu_db settings
 
-:- setting(mx_separator, char, '>', "title menu separator").
+:- setting(mx_label_prefix, atom, '<', "menu label prefix").
+:- setting(mx_label_suffix, atom, '>|', "menu label suffix").
+:- setting(mx_subpart_suffix, atom, '|', "menu subpart suffix").
 :- setting(mx_ext_char, char, '#', "extended menu prefix char").
 :- setting(mx_exit_char, char, '.', "menu exit char").
 
@@ -174,28 +191,21 @@ cached_exist_mx(MX) :-
 % LABELS
 % ------
 
-% make_menu_label/3
-% (+MX:integer, -MenuLabel:string, +Separator:string)
+% make_menu_label/2
+% (+MX:integer, -MenuLabel:string)
 
-make_menu_label(MX, MenuLabel, Separator) :-
+make_menu_label(MX, MenuLabel) :-
 % Make MenuLabel including suffix separator
     % Replace menu label by default one if empty
         mx_label(MX, MenuLabel1),
         mx_label(-1, Default),
         if_empty_default(MenuLabel1, Default, MenuLabel2),
-    % Replace separator by DefaultSeparator if empty
-        setting(mx_separator, DefaultSeparator),
-        if_empty_default(Separator, DefaultSeparator, Separator1),
-    % Make MenuLabel string including its suffix separator
-        format(atom(A), "~w~w ", [MenuLabel2, Separator1]),
+    % Grabs prefix and suffix from settings
+        setting(mx_label_prefix, Prefix),
+        setting(mx_label_suffix, Suffix),
+    % Make MenuLabel string with Prefix and Suffix
+        format(atom(A), "~w~w~w", [Prefix, MenuLabel2, Suffix]),
         atom_string(A, MenuLabel).
-
-% make_menu_label/2
-% (+MX:integer, -MenuLabel:string)
-
-make_menu_label(MX, MenuLabel) :-
-% Make MenuLabel with default suffix separator
-    make_menu_label(MX, MenuLabel, _).
 
 % ------------
 % MAKING MENUS
@@ -223,15 +233,18 @@ make_menu_list_(_).
 % (+XS:list, -Subparts:list)
 % Put menu list into subparts ["0=Back ", "1=Option "] ready for
 % joining ++ Thx to @PaulBrownMagic
+% PS: added suffix separator from settings in spite of just space
 
 format_subparts([], []).
 % base case with empty lists
 
 format_subparts([X|Xs], [SubpartHead|SubpartTrail]) :-
      % concatenates menu choice and name from X to A
-         format(atom(A), "~w=~w ", X),
-     % atom A to string SubpartHead
-         atom_string(A, SubpartHead),
+         format(atom(A), "~w=~w", X),
+     % atom A to string, concat Str and Suffix to do SubpartHead
+         atom_string(A, Str),
+         setting(mx_subpart_suffix, Suffix),
+         concat(Str, Suffix, SubpartHead),
      % recursion with the trail
          format_subparts(Xs, SubpartTrail).
 
@@ -243,7 +256,7 @@ format_subparts([X|Xs], [SubpartHead|SubpartTrail]) :-
 
 make_menu(MX, _) :-
     \+ exist_mx(MX),
-    print_message(warning, menu_not_found(MX)),
+    print_message(error, menu_not_found(MX)),
     !, fail.
 
 make_menu(MX, MenuX) :-
@@ -277,7 +290,7 @@ cached_make_menu(MX, MenuX) :-
 
 do_it(MX, _) :-
     \+ exist_mx(MX),
-    print_message(warning, menu_not_found(MX)),
+    print_message(error, menu_not_found(MX)),
     !, fail.
 
 do_it(MX, UserChoice) :-
@@ -397,7 +410,7 @@ write_menu(MX) :-
 ask_menu(MX) :-
 % check MX validity
     \+ exist_mx(MX),
-    print_message(warning, menu_not_found(MX)),
+    print_message(error, menu_not_found(MX)),
     !, fail.
 
 ask_menu(MX) :-
