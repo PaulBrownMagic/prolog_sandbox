@@ -1,11 +1,11 @@
 /* <module> menu_db_test.pl
  *
- * @version 1809.031
+ * @version 1809.032
  * @licence MIT
  * @copyright Wiserman & Partners
  * @author Thierry JAUNAY
  * @arg creadate 2018/08/24
- * @arg update 2018/09/28
+ * @arg update 2018/09/30
  * @arg comment Data test sample for menu_db.pl
  * @arg language SWI-Prolog
  *
@@ -45,39 +45,6 @@
               mx_label/2,
               mx_group/2,
               mx_parent/2] ).
-
-% --------
-% MESSAGES
-% --------
-
-:- multifile prolog:message//1.
-
-prolog:message(menu_not_found(MX) ) -->
-    [ '(~w) Menu not found: ~w' - [100, MX] ].
-
-prolog:message(no_item ) -->
-    [ '(~w) No menu item found' - [110] ].
-
-prolog:message(no_item(MX) ) -->
-    [ '(~w) No menu item found in menu: ~w' - [111, MX] ].
-
-prolog:message(num_choice ) -->
-    [ '(~w) Standard numerical choice' - [500] ].
-
-prolog:message(ext_choice ) -->
-    [ '(~w) Extended menu choice' - [501] ].
-
-prolog:message(what_choice ) -->
-    [ '(~w) What is your choice ... ? ' - [510] ].
-
-prolog:message(chose_again ) -->
-    [ '(~w) Please retype your menu choice ...  ' - [511] ].
-
-prolog:message(bad_num_choice(UserChoice) ) -->
-    [ '(~w) Bad numerical code choice: ~w' - [550, UserChoice], nl ].
-
-prolog:message(bad_ext_choice(UserChoice) ) -->
-    [ '(~w) Bad extended code choice: ~w' - [551, UserChoice], nl ].
 
 % ----------------
 % DATABASE EXAMPLE
