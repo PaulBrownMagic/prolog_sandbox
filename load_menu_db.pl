@@ -45,9 +45,9 @@
 % use_module declarations
 % -----------------------
 
-% menu_db_test module for database
+% menu_db_for_test module for database
 
-:- use_module('menu_db_test').
+:- use_module('menu_db_for_test').
 
 % ... to customize to dev needs and for example be renamed
 % use_module(menu_db_1).

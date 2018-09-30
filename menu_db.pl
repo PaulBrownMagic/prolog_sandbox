@@ -101,7 +101,7 @@
 % menu_db settings
 % ----------------
 
-% Example : [Menu_1] 0=Back,1=Option_1,2=Option_2,3=Option_3.
+% Chosen design : [Menu_1] 0=Back,1=Option_1,2=Option_2,3=Option_3.
 :- setting(mx_label_prefix, atom, '[', "menu label prefix").
 :- setting(mx_label_suffix, atom, '] ', "menu label suffix").
 :- setting(mx_subpart_suffix, atom, ',', "menu subpart suffix").

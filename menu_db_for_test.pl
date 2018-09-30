@@ -1,4 +1,4 @@
-/* <module> menu_db_test.pl
+/* <module> menu_db_for_test.pl
  *
  * @version 1809.032
  * @licence MIT
@@ -40,7 +40,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-:- module(menu_db_test,[
+:- module(menu_db_for_test,[
               mx_choice_item/3,
               mx_label/2,
               mx_group/2,

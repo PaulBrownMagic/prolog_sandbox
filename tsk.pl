@@ -1,13 +1,29 @@
-/* <module> menu_db_msg.pl
+/*
+ * tsk.pl
  *
- * @version 1809.004
+ * Task management toolbox to do it just with text files,
+ * hashtags and line menus.
+ *
+ * Status = under development
+ *
+ * @version 1809.002
  * @licence MIT
  * @copyright Wiserman & Partners
  * @author Thierry JAUNAY
- * @arg creadate 2018/08/30
+ * @arg creadate 2018/08/25
  * @arg update 2018/09/30
- * @arg comment Messages for menu_db.pl
+ * @arg comment tsk.pl - Task management toobox
  * @arg language SWI-Prolog
+ *
+ * ----------
+ *
+ * Use =
+ * -
+ * -
+ * -
+ * - use go_tsk/0
+ *
+ * Tools = check in the Tools part
  *
  * ----------
  *
@@ -40,37 +56,45 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-% --------
-% MESSAGES
-% --------
+%
+% MODULES & DATA
+% --------------
 
-:- multifile prolog:message//1.
+% test database ...
+%    use_module(tsk_db_0).
 
-prolog:message(menu_not_found(MX) ) -->
-    [ '(~w) Menu not found: ~w' - [100, MX] ].
+% ... to customize to dev needs and for example be renamed
+%    use_module(tsk_db_1).
 
-prolog:message(no_item ) -->
-    [ '(~w) No menu item found' - [110] ].
+% menus management
+    use_module(menu_db).
 
-prolog:message(no_item(MX) ) -->
-    [ '(~w) No menu item found in menu: \'~w\'' - [111, MX] ].
+% toolbox for herein used predicates
+    use_module(toolbox, [
+               get_char_1/1,
+               if_empty_default/3,
+               list_to_string/2,
+               print_matrix/1 ] ).
 
-prolog:message(num_choice ) -->
-    [ '(~w) Standard numerical choice' - [500] ].
+% cache buffering
+    :- dynamic(known/3).
 
-prolog:message(ext_choice ) -->
-    [ '(~w) Extended menu choice' - [501] ].
+%
+% OPEN FILES
+% ----------
+%
 
-prolog:message(what_choice ) -->
-    [ '(~w) What is your choice ... ? ' - [510] ].
+%
+% CHECK HASHTAGS
+% --------------
+%
 
-prolog:message(chose_again ) -->
-    [ '(~w) Please retype your menu choice ...  ' - [511] ].
 
-prolog:message(bad_num_choice(UserChoice) ) -->
-    [ '(~w) Bad numerical code choice: \'~w\'' - [550, UserChoice], nl ].
 
-prolog:message(bad_ext_choice(UserChoice) ) -->
-    [ '(~w) Bad extended code choice: \'~w\'' - [551, UserChoice], nl ].
 
-/* ********** END OF FILE ********** */
+
+
+
+
+
+
