@@ -1,12 +1,12 @@
 /*
  * load_menu_db.pl
  *
- * @version 1809.008
+ * @version 1809.009
  * @licence MIT
  * @copyright Wiserman & Partners
  * @author Thierry JAUNAY
  * @arg creadate 2018/09/04
- * @arg update 2018/09/29
+ * @arg update 2018/09/30
  * @arg comment loader for menu_db.pl
  * @arg language SWI-Prolog
  *
@@ -44,17 +44,6 @@
 % -----------------------
 % use_module declarations
 % -----------------------
-
-% toolbox module for predicates
-
-:- use_module('toolbox', [
-               cls/0,
-               get_char_1/1,
-               if_empty_default/3,
-               known/3,
-               list_to_string/2,
-               print_matrix/1 ]
-             ).
 
 % menu_db_test module for database
 
