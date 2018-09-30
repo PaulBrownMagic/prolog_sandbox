@@ -6,7 +6,7 @@
  * to provide a simple selection with menu number + choice
  * in two ways : numerical or hashtag.
  *
- * @version 1809.052
+ * @version 1809.054
  * @licence MIT
  * @copyright Wiserman & Partners
  * @author Thierry JAUNAY
@@ -100,11 +100,22 @@
 
 % menu_db settings
 
-:- setting(mx_label_prefix, atom, '<', "menu label prefix").
-:- setting(mx_label_suffix, atom, '>|', "menu label suffix").
-:- setting(mx_subpart_suffix, atom, '|', "menu subpart suffix").
+:- setting(mx_label_prefix, atom, '[', "menu label prefix").
+:- setting(mx_label_suffix, atom, '] ', "menu label suffix").
+:- setting(mx_subpart_suffix, atom, ',', "menu subpart suffix").
+:- setting(mx_subpart_last_suffix, atom, '.', "menu subpart last suffix").
+% Example : [Menu_1] 0=Back,1=Option_1,2=Option_2,3=Option_3.
+
 :- setting(mx_ext_char, char, '#', "extended menu prefix char").
 :- setting(mx_exit_char, char, '.', "menu exit char").
+
+% Example of alternative template for menu UI
+% <Menu_1>|0=Back|1=Option_1|2=Option_2|3=Option_3|
+%
+% :- setting(mx_label_prefix, atom, '<', "menu label prefix").
+% :- setting(mx_label_suffix, atom, '>|', "menu label suffix").
+% :- setting(mx_subpart_suffix, atom, '|', "menu subpart suffix").
+% :- setting(mx_subpart_last_suffix, atom, '|', "menu subpart last suffix").
 
 :- load_settings('settings.db').
 
@@ -237,6 +248,19 @@ make_menu_list_(_).
 
 format_subparts([], []).
 % base case with empty lists
+
+format_subparts([], _) :- !.
+% no more subpart assembly to do
+
+format_subparts([X|''], [SubpartHead|SubpartTrail]) :-
+     % concatenates menu choice and name from X to A
+         format(atom(A), "~w=~w", X),
+     % atom A to string, concat Str and last Suffix to do SubpartHead
+         atom_string(A, Str),
+         setting(mx_subpart_last_suffix, Suffix),
+         concat(Str, Suffix, SubpartHead),
+     % recursion with the trail
+         format_subparts(_, SubpartTrail).
 
 format_subparts([X|Xs], [SubpartHead|SubpartTrail]) :-
      % concatenates menu choice and name from X to A
