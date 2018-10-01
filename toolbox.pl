@@ -89,7 +89,7 @@ pause(X) :-
     write(X), get_single_char(_), nl.
 
 pause :-
-    pause('Press any key to continue ...').
+    pause("Press any key to continue ...").
 
 %! if_empty_default(+ToCheck:string, +Default:string, -Result:string)
 %! is semidet

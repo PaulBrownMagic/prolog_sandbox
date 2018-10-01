@@ -4,8 +4,6 @@
  * Task management toolbox to do it just with text files,
  * hashtags and line menus.
  *
- * Status = under development
- *
  * @version 1809.002
  * @licence MIT
  * @copyright Wiserman & Partners
@@ -56,28 +54,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-%
+% --------------
 % MODULES & DATA
 % --------------
 
-% test database ...
-%    use_module(tsk_db_0).
-
-% ... to customize to dev needs and for example be renamed
-%    use_module(tsk_db_1).
-
-% menus management
-    use_module(menu_db).
-
 % toolbox for herein used predicates
-    use_module(toolbox, [
+:- use_module(toolbox, [
                get_char_1/1,
                if_empty_default/3,
                list_to_string/2,
                print_matrix/1 ] ).
 
-% cache buffering
-    :- dynamic(known/3).
+% menus management
+:- [menu_db_for_tsk].
+:- use_module(menu_db).
 
 %
 % OPEN FILES
@@ -89,9 +79,27 @@
 % --------------
 %
 
+% SANDBOX
+
+go :-
+    edit('test.txt').
+
+/*
+ * /* get the wd */
+?- working_directory(X, X).
+X = 'c:/users/user/documents/prolog/'.
+
+/* set the wd */
+?- working_directory(_, 'c:/users/user/desktop').
+true.
+
+?- absolute_file_name('text.txt', X, [mode(read)]).
+X = 'c:/users/user/desktop/text.txt'
+*/
 
 
 
+/* ********** END OF FILE ********** */
 
 
 

@@ -6,12 +6,12 @@
  * to provide a simple selection with menu number + choice
  * in two ways : numerical or hashtag.
  *
- * @version 1809.054
+ * @version 1809.055
  * @licence MIT
  * @copyright Wiserman & Partners
  * @author Thierry JAUNAY
  * @arg creadate 2018/08/05
- * @arg update 2018/09/30
+ * @arg update 2018/10/01
  * @arg comment menu_db.pl - Menu management
  * @arg language SWI-Prolog
  *
@@ -204,7 +204,7 @@ cached_exist_mx(MX) :-
 % ------
 
 % make_menu_label/2
-% (+MX:integer, -MenuLabel:string)
+% (+MX:integer, -MenuLabel:atom)
 
 make_menu_label(MX, MenuLabel) :-
 % Make MenuLabel including suffix separator
@@ -215,9 +215,8 @@ make_menu_label(MX, MenuLabel) :-
     % Grabs prefix and suffix from settings
         setting(mx_label_prefix, Prefix),
         setting(mx_label_suffix, Suffix),
-    % Make MenuLabel string with Prefix and Suffix
-        format(atom(A), "~w~w~w", [Prefix, MenuLabel2, Suffix]),
-        atom_string(A, MenuLabel).
+    % Make MenuLabel with Prefix and Suffix
+        format(atom(MenuLabel), "~w~w~w", [Prefix, MenuLabel2, Suffix]).
 
 % ------------
 % MAKING MENUS
@@ -243,11 +242,11 @@ make_menu_list_(_).
 
 % format_subparts/2
 % (+XS:list, -Subparts:list)
-% Put menu list into subparts ["0=Back ", "1=Option "] ready for
+% Put menu list into subparts ['0=Back ', '1=Option '] ready for
 % joining ++ Thx to @PaulBrownMagic
 % PS: added suffix separator from settings in spite of just space
 
-format_subparts([], []).
+format_subparts([], []) :- !.
 % base case with empty lists
 
 format_subparts([], _) :- !.
@@ -256,21 +255,19 @@ format_subparts([], _) :- !.
 format_subparts([X|''], [SubpartHead|SubpartTrail]) :-
      % concatenates menu choice and name from X to A
          format(atom(A), "~w=~w", X),
-     % atom A to string, concat Str and last Suffix to do SubpartHead
-         atom_string(A, Str),
+     % concat Str and last Suffix to do SubpartHead
          setting(mx_subpart_last_suffix, Suffix),
-         concat(Str, Suffix, SubpartHead),
+         atom_concat(A, Suffix, SubpartHead),
      % recursion with the trail
          format_subparts(_, SubpartTrail).
 
 format_subparts([X|Xs], [SubpartHead|SubpartTrail]) :-
      % concatenates menu choice and name from X to A
          format(atom(A), "~w=~w", X),
-     % atom A to string, concat Str and Suffix to do SubpartHead
-         atom_string(A, Str),
+     % concat Str and Suffix to do SubpartHead
          setting(mx_subpart_suffix, Suffix),
-         concat(Str, Suffix, SubpartHead),
-     % recursion with the trail
+         atom_concat(A, Suffix, SubpartHead),
+      % recursion with the trail
          format_subparts(Xs, SubpartTrail).
 
 % make_menu/2
@@ -320,7 +317,7 @@ do_it(MX, _) :-
 
 do_it(MX, UserChoice) :-
     nl, writeln('TBD - replace by real do_it/2'),
-    format('(Menu: ~w / Choice: ~w)~n~n', [MX, UserChoice]).
+    format("(Menu: ~w / Choice: ~w)~n~n", [MX, UserChoice]).
 
 % ---------------------
 % MANAGING MENU CHOICES
@@ -345,7 +342,8 @@ make_std_choices(MX, Choices) :-
 % Known or added to be known
 
 cached_std_choices(MX, Choices) :-
-    known(mx_std_choices, MX, Choices), !.
+    known(mx_std_choices, MX, Choices),
+    !.
 
 cached_std_choices(MX, Choices) :-
     make_std_choices(MX, Choices),
@@ -458,7 +456,7 @@ go :-
 % ---------------
 
 %% Typical choices to test with mx_test/2 and ask_menu/2,
-% once menu_db_0 loaded :
+% once menu_db_for_test loaded :
 %
 % MX = 1 / num choice 1 (all is fine)
 % MX = 1 / num choice 5 (not existing choice)

@@ -1,12 +1,12 @@
-/* <module> menu_db_for_test.pl
+/* <module> menu_db_for_tsk.pl
  *
- * @version 1809.032
+ * @version 1809.003
  * @licence MIT
  * @copyright Wiserman & Partners
  * @author Thierry JAUNAY
- * @arg creadate 2018/08/24
- * @arg update 2018/09/30
- * @arg comment Data test sample for menu_db.pl
+ * @arg creadate 2018/09/30
+ * @arg update 2018/10/01
+ * @arg comment menu_db_for_tsk.pl - Data test sample for tsk.pl
  * @arg language SWI-Prolog
  *
  * ----------
@@ -40,7 +40,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-:- module(menu_db_for_test,[
+:- module(menu_db_for_tsk,[
               mx_choice_item/3,
               mx_label/2,
               mx_group/2,
