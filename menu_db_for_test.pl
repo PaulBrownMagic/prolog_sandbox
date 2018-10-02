@@ -40,15 +40,43 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-:- module(menu_db_for_test,[
-              mx_choice_item/3,
-              mx_label/2,
-              mx_group/2,
-              mx_parent/2] ).
+:- module(menu_db_for_test,
+    [ frame/2
+    % , triple/3
+    % , mx_choice_item/3
+    % , mx_label/2
+    % , mx_group/2
+    % , mx_parent/2
+    ]
+).
 
 % ----------------
 % DATABASE EXAMPLE
 % ----------------
+%
+% As frames
+
+frame("Default_menu", [choice_items=[]]).
+frame("Menus", [choice_items=["Back", "Option_1", "Option_2", "Option_3"]]).
+frame("Menu_1" [choice_items=[], parent="", group="TEST"]).
+frame("", [choice_items=["Back", "More1"], group="TEST").
+frame("TASKS", [chioce_items=["Inbox", "Today", "Tomorrow", "Someday", "Waiting", "Overdue"], group="TASK").
+
+
+/*
+% As triples, incomplete...
+triple("Menus", choice_item, "Back").
+triple("Menus", choice_item, "Option_1").
+triple("Menus", choice_item, "Option_2").
+triple("Menus", choice_item, "Option_3").
+triple("Menu_1", parent, "").
+triple("Menu_1", group, "TEST").
+triple("", choice_item, "Back").
+triple("", choice_item, "More1").
+triple("", group, "TEST").
+*/
+
+/*
 %
 % MX =  0 (reserved) list of menus
 % MX = -1 (reserved)
@@ -95,36 +123,5 @@ mx_group(4, "TASK").
 % mx_parent(MX1:integer, MX2:integer)
 % where MX1 is the parent menu of MX2
 mx_parent(1, 2).
-
+*/
 /* ********** END OF FILE ********** */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
