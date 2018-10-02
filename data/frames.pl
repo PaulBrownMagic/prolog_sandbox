@@ -20,7 +20,7 @@ get_frame(Name, Slots) :-
     frame(Name, Slots). % Request is for all slots
 get_frame(Name, Required) :-
     \+ frame(Name, Required), % Request is for some slots
-    get_frame_slots(Name, Slots),
+    frame(Name, Slots),
     get_from_slots(Required, Slots).
 
 %! get_from_slots(?Required, +Slots:list) is nondet.
@@ -42,3 +42,6 @@ get_from_slots(Attr=Value, Slots) :-  % check isa
 get_from_slots([Required|Tail], Slots) :-  % List of Req, recurse.
     get_from_slots(Required, Slots),
     get_from_slots(Tail, Slots).
+
+load_data(Filename) :-
+    consult(Filename).

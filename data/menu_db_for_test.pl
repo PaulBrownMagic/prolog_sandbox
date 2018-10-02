@@ -56,11 +56,11 @@
 %
 % As frames
 
-frame("Default_menu", [choice_items=[]]).
-frame("Menus", [choice_items=["Back", "Option_1", "Option_2", "Option_3"]]).
-frame("Menu_1" [choice_items=[], parent="", group="TEST"]).
-frame("", [choice_items=["Back", "More1"], group="TEST").
-frame("TASKS", [chioce_items=["Inbox", "Today", "Tomorrow", "Someday", "Waiting", "Overdue"], group="TASK").
+frame("Default_menu", [choice_item=[]]).
+frame("Menus", [choice_item=["Back", "Option_1", "Option_2", "Option_3"]]).
+frame("Menu_1", [choice_item=[], parent="", group="TEST"]).
+frame("", [choice_item=["Back", "More1"], group="TEST"]).
+frame("TASKS", [chioce_item=["Inbox", "Today", "Tomorrow", "Someday", "Waiting", "Overdue"], group="TASK"]).
 
 
 /*
