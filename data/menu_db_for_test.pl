@@ -1,43 +1,44 @@
 /* <module> menu_db_for_test.pl
- *
- * @version 1809.032
- * @licence MIT
- * @copyright Wiserman & Partners
- * @author Thierry JAUNAY
- * @arg creadate 2018/08/24
- * @arg update 2018/09/30
- * @arg comment Data test sample for menu_db.pl
- * @arg language SWI-Prolog
- *
- * ----------
- *
- * Copyright (c) 2018, Wiserman & Partners
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
+
+  @version 1809.032 (+ 1)
+  @licence MIT
+  @copyright Wiserman & Partners
+  @author Thierry JAUNAY
+  @author Paul Brown
+  @arg createdate 2018/08/24
+  @arg update 2018/10/02
+  @arg comment Data test sample for menu_db.pl
+  @arg language SWI-Prolog
+
+  ----------
+
+  Copyright (c) 2018, Wiserman & Partners
+  All rights reserved.
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+  1. Redistributions of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+
+  2. Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in
+     the documentation and/or other materials provided with the
+     distribution.
+
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+  FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+  COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  POSSIBILITY OF SUCH DAMAGE.
  */
 
 :- module(menu_db_for_test,
@@ -54,13 +55,59 @@
 % DATABASE EXAMPLE
 % ----------------
 %
-% As frames
+% As frames, using the name of the menu as the identity.
+% This could be replaced with an integer as done previously
+% and the label would become a slot. This version forces menus
+% to have unique names, hence MX 3 is not included. Could
+% make use of `library(assoc)` for the slot lists.
 
-frame("Default_menu", [choice_item=[]]).
-frame("Menus", [choice_item=["Back", "Option_1", "Option_2", "Option_3"]]).
-frame("Menu_1", [choice_item=[], parent="", group="TEST"]).
-frame("", [choice_item=["Back", "More1"], group="TEST"]).
-frame("TASKS", [chioce_item=["Inbox", "Today", "Tomorrow", "Someday", "Waiting", "Overdue"], group="TASK"]).
+%! frame(?Unique_Name:string, ?Slots:list) is semidet.
+%  A frame holds the attributes and values for a menu
+%
+%  @arg Unique_Name is the name of the menu and its identity
+%  @arg Slots is a list of Attr=Val pairs.
+
+frame("Default_menu",
+    [ choice_item=[]
+    ]
+).
+
+frame("Menus",
+    [ choice_item=[ "Back"
+                  , "Option_1"
+                  , "Option_2"
+                  , "Option_3"
+                  ]
+    ]
+).
+
+frame("Menu_1",
+    [ choice_item=[
+                  ]
+    , parent=""
+    , group="TEST"
+    ]
+).
+
+frame("",
+    [ choice_item=[ "Back"
+                  , "More1"
+                  ]
+    , group="TEST"
+    ]
+).
+
+frame("TASKS",
+    [ chioce_item=[ "Inbox"
+                  , "Today"
+                  , "Tomorrow"
+                  , "Someday"
+                  , "Waiting"
+                  , "Overdue"
+                  ]
+    , group="TASK"
+    ]
+).
 
 
 /*

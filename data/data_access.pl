@@ -13,6 +13,8 @@ the data is stored from effecting the rest of the application.
 @license MIT
 */
 
+% Using frames, change this to
+% accomodate other data representations
 :- use_module(frames,
     [ get_frame/2 as get_data
     , load_data/1

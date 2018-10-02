@@ -5,7 +5,6 @@
 /** <module> Frames
 
 This is a query engine to a frame-based knowledge base.
-It allows the knowledge based to be queried.
 
 @author Paul Brown
 @licence MIT
